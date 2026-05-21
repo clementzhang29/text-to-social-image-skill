@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Convert user text into social-style HTML cards and export ordered PNG slices.",
+  "description": "Local-first pipeline to convert text/markdown/HTML into ordered social image slices with reproducible export summaries.",
   "scripts": {
     "text2html": "node scripts/text-to-html.mjs",
     "html2images": "node scripts/html-to-images.mjs",

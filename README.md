@@ -1,59 +1,123 @@
 ﻿# text-to-social-image-skill
 
-## 中文说明
+Text-first pipeline for turning long-form content into post-ready image cards.
 
-`text-to-social-image-skill` 用于把用户上传文本自动排版成社媒图文卡片，并按顺序导出 PNG 图片，适合直接切图发布。
+## Abstract / 摘要
 
-核心能力：
-- 文本 -> 自动排版 HTML（默认生成 `.xiaohongshu-slice` 页面片段）
-- HTML -> 按顺序导出 PNG（`001`, `002`, ...）
-- 批量处理目录中的 HTML（每个文件一个输出文件夹）
-- 导出摘要（`export_summary.txt` / `batch_summary.txt`）便于复现
+`text-to-social-image-skill` is a lightweight publishing pipeline that converts uploaded text or HTML into ordered PNG slices for social platforms.
 
-常用命令：
+`text-to-social-image-skill` 是一个轻量级图文发布流水线：将用户上传的文本或 HTML 自动排版并导出为有序 PNG 切片，便于直接发布到社媒平台。
 
-```bash
-npm install
+## Project Positioning / 项目定位
 
-# 文本转 HTML
-node scripts/text-to-html.mjs --input ./examples/sample-input.txt --output ./out/sample.html --title "标题"
+- **Input**: `.txt`, `.md`, `.html`, `.htm`
+- **Core output**: ordered image slices (`001.png`, `002.png`, ...)
+- **Primary users**: creators, content operators, educators, indie makers
+- **Primary use cases**:
+  - long text to carousel cards
+  - HTML snapshot export
+  - reproducible batch export for editorial workflows
 
-# HTML 转图片
-node scripts/html-to-images.mjs --input ./out/sample.html --outputDir ./out/sample_images
+## Quick Links
 
-# 文本一步转图片
-node scripts/text-to-images.mjs --input ./examples/sample-input.txt --outputRoot ./out --title "标题"
+- Chinese documentation: [README_ZH.md](./README_ZH.md)
+- English documentation: [README_EN.md](./README_EN.md)
+- Skill trigger and usage: [SKILL.md](./SKILL.md)
 
-# 批量 HTML 转图片（每个文件一个文件夹）
-node scripts/batch-html-to-images.mjs --inputDir "C:/Users/you/Downloads" --outputRoot "C:/Users/you/Downloads/html_images_export"
+## Key Features
+
+- Text -> auto typeset HTML cards
+- HTML -> ordered PNG export
+- Batch HTML export (one folder per source file)
+- Deterministic naming + export summaries
+- Selector fallback for different HTML structures
+
+## Architecture (Current)
+
+```mermaid
+flowchart LR
+  A["Text or HTML Input"] --> B["HTML Generator (optional)"]
+  B --> C["Card DOM (.xiaohongshu-slice / .xhs-card / article...) "]
+  A --> C
+  C --> D["Playwright Capture"]
+  D --> E["Ordered PNG Files"]
+  E --> F["export_summary.txt / batch_summary.txt"]
 ```
 
----
-
-## English Description
-
-`text-to-social-image-skill` converts uploaded text into social-media-ready card layouts and exports ordered PNG slices for direct posting.
-
-Key capabilities:
-- Text -> auto typeset HTML cards (default `.xiaohongshu-slice` blocks)
-- HTML -> ordered PNG export (`001`, `002`, ...)
-- Batch export for a directory of HTML files (one folder per source file)
-- Export summaries (`export_summary.txt` / `batch_summary.txt`) for reproducibility
-
-Quick commands:
+## CLI
 
 ```bash
 npm install
 
-# Text to HTML
+# Text -> HTML
 node scripts/text-to-html.mjs --input ./examples/sample-input.txt --output ./out/sample.html --title "Title"
 
-# HTML to images
+# HTML -> images
 node scripts/html-to-images.mjs --input ./out/sample.html --outputDir ./out/sample_images
 
-# One-step text to images
+# Text -> images (one step)
 node scripts/text-to-images.mjs --input ./examples/sample-input.txt --outputRoot ./out --title "Title"
 
-# Batch HTML to images (one folder per file)
+# Batch HTML -> images
 node scripts/batch-html-to-images.mjs --inputDir "C:/Users/you/Downloads" --outputRoot "C:/Users/you/Downloads/html_images_export"
 ```
+
+## Output Contract
+
+- Image names: `001*.png`, `002*.png`, ...
+- Batch folders: `001_<name>`, `002_<name>`, ...
+- Per-file summary: `export_summary.txt`
+- Batch summary: `batch_summary.txt`
+
+## Status
+
+### Stable now
+
+- Text to card-style HTML
+- Ordered element-level screenshot export
+- Batch export with deterministic ordering
+
+### Planned next
+
+- Auto title generation from txt/md
+- Adaptive pagination strategy by content density
+- Theme switch (`xiaohongshu` / `wechat`)
+- Minimal drag-and-drop web UI
+
+## Repository Structure
+
+```text
+.
+├─ SKILL.md
+├─ README.md
+├─ README_ZH.md
+├─ README_EN.md
+├─ examples/
+└─ scripts/
+   ├─ text-to-html.mjs
+   ├─ html-to-images.mjs
+   ├─ text-to-images.mjs
+   ├─ batch-html-to-images.mjs
+   └─ lib/utils.mjs
+```
+
+## FAQ
+
+1. Why only one image exported for some files?
+- Your HTML may not use the default slice selector. Use `html-to-images.mjs` after ensuring card containers exist, or update selector priority in the script.
+
+2. Why are links not extracted in bookmark generation scenarios?
+- Some pages include site names only (no explicit URLs). In such cases, generate search-style bookmarks or enrich URLs with a resolver stage.
+
+3. Is output deterministic?
+- Naming and ordering are deterministic. Rendering differences may still occur across browser/runtime versions.
+
+## Safety & Privacy
+
+- The tool runs locally and does not upload input content by default.
+- Review exported images before publishing.
+- Avoid embedding secrets in source HTML/text.
+
+## License
+
+No explicit license is attached yet. Add one before public reuse outside personal/internal workflows.

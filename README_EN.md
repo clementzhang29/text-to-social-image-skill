@@ -1,21 +1,37 @@
-﻿# text-to-social-image-skill
+﻿# text-to-social-image-skill (English)
 
-Convert uploaded text into beautiful, slice-ready social media images.
+A local-first pipeline that converts user text into social-ready image cards with deterministic export order.
 
-## Features
+## Abstract
 
-- Text -> auto typeset HTML cards
-- HTML -> ordered PNG slices (`001`, `002`, ...)
-- Batch export: one output folder per HTML file
-- Stable naming and export summaries for reproducibility
+`text-to-social-image-skill` compiles long-form content into reproducible visual outputs:
+- text/markdown to structured HTML cards
+- HTML cards to ordered PNG slices
+- batch processing with deterministic folder naming and export summaries
 
-## Use Cases
+## Why this project exists
 
-- Xiaohongshu / Instagram carousel preparation
-- Long-form content split into post-ready images
-- Structured HTML screenshot export for editorial workflows
+Publishing teams frequently hit the same problems:
+- manual layout is slow and inconsistent
+- image slice order gets messy
+- exports are hard to reproduce later
 
-## Install
+This project solves that with a practical CLI workflow.
+
+## Best-fit scenarios
+
+- turn long content into social carousel images
+- export screenshots from static editorial HTML
+- batch processing for content operations pipelines
+
+## Current capabilities
+
+- text -> card-style HTML generation
+- HTML element-level capture -> ordered PNG
+- batch HTML export with one folder per input file
+- summary files for auditability and reproducibility
+
+## Quick start
 
 ```bash
 npm install
@@ -58,16 +74,76 @@ node scripts/batch-html-to-images.mjs \
   --outputRoot "C:/Users/you/Downloads/html_images_export"
 ```
 
-## Output Structure
+## Input/Output contract
 
-- Batch folders: `001_<name>`, `002_<name>`, ...
-- Images: `001_<slice>.png`, `002_<slice>.png`, ...
-- Per-folder summary: `export_summary.txt`
-- Batch summary: `batch_summary.txt`
+### Input
 
-## Skill Trigger (for Codex)
+- `.txt`, `.md` for auto layout
+- `.html`, `.htm` for direct capture
 
-Use this skill when users ask to:
-- upload text and generate social image cards,
-- auto layout and split long text into image pages,
-- export HTML content into ordered image files.
+### Output
+
+- ordered images: `001*.png`, `002*.png`, ...
+- batch folders: `001_<name>`, `002_<name>`, ...
+- per-export summary: `export_summary.txt`
+- batch summary: `batch_summary.txt`
+
+## Selector fallback strategy
+
+Current default priority:
+- `.xiaohongshu-slice`
+- `.xhs-canvas`
+- `article`
+- `section`
+- `body`
+
+If your cards use `.xhs-card`, add it near the top to avoid full-body fallback captures.
+
+## Repository structure
+
+```text
+.
+├─ SKILL.md
+├─ README.md
+├─ README_ZH.md
+├─ README_EN.md
+├─ examples/
+└─ scripts/
+   ├─ text-to-html.mjs
+   ├─ html-to-images.mjs
+   ├─ text-to-images.mjs
+   ├─ batch-html-to-images.mjs
+   └─ lib/utils.mjs
+```
+
+## Known limitations
+
+- title generation and pagination are currently basic
+- dual-theme templates (Xiaohongshu/WeChat) are planned
+- web drag-and-drop UI is not shipped yet
+
+## Roadmap
+
+1. auto title generation from txt/md
+2. adaptive pagination by content density
+3. theme switch (`xiaohongshu` / `wechat`)
+4. minimal web UI (drag-and-drop -> one-click export)
+5. optional URL resolver for bookmark enrichment
+
+## FAQ
+
+1. Why did I get only one image?
+- Selector mismatch. Your HTML container might not match current selector priority.
+
+2. Why are bookmarks not real URLs in some cases?
+- Some sources include site names only, not explicit links.
+
+3. Is export deterministic?
+- Naming/order are deterministic. Pixel-level rendering may vary across browser/runtime versions.
+
+## Security & Privacy
+
+- local-first execution by default
+- no automatic upstream upload
+- review generated media before publishing
+- avoid embedding secrets in source content
