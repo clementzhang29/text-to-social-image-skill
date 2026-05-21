@@ -1,0 +1,16 @@
+﻿{
+  "name": "text-to-social-image-skill",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Convert user text into social-style HTML cards and export ordered PNG slices.",
+  "scripts": {
+    "text2html": "node scripts/text-to-html.mjs",
+    "html2images": "node scripts/html-to-images.mjs",
+    "text2images": "node scripts/text-to-images.mjs",
+    "batch": "node scripts/batch-html-to-images.mjs"
+  },
+  "dependencies": {
+    "playwright": "^1.60.0"
+  }
+}
