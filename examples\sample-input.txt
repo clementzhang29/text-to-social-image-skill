@@ -1,0 +1,9 @@
+﻿# Sample Topic
+
+This is a sample paragraph for social post card rendering.
+
+Use one idea per paragraph so each exported image can be posted directly.
+
+Add concrete steps and keep sentence rhythm stable for mobile reading.
+
+When content is long, the tool auto-splits into multiple image slices.
