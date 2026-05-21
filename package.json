@@ -1,16 +1,1 @@
-﻿{
-  "name": "text-to-social-image-skill",
-  "version": "0.1.0",
-  "private": true,
-  "type": "module",
-  "description": "Local-first pipeline to convert text/markdown/HTML into ordered social image slices with reproducible export summaries.",
-  "scripts": {
-    "text2html": "node scripts/text-to-html.mjs",
-    "html2images": "node scripts/html-to-images.mjs",
-    "text2images": "node scripts/text-to-images.mjs",
-    "batch": "node scripts/batch-html-to-images.mjs"
-  },
-  "dependencies": {
-    "playwright": "^1.60.0"
-  }
-}
+77u/ewogICJuYW1lIjogInRleHQtdG8tc29jaWFsLWltYWdlLXNraWxsIiwKICAidmVyc2lvbiI6ICIwLjEuMCIsCiAgInByaXZhdGUiOiB0cnVlLAogICJ0eXBlIjogIm1vZHVsZSIsCiAgImRlc2NyaXB0aW9uIjogIkxvY2FsLWZpcnN0IHBpcGVsaW5lIHRvIGNvbnZlcnQgdGV4dC9tYXJrZG93bi9IVE1MIGludG8gb3JkZXJlZCBzb2NpYWwgaW1hZ2Ugc2xpY2VzIHdpdGggcmVwcm9kdWNpYmxlIGV4cG9ydCBzdW1tYXJpZXMuIiwKICAic2NyaXB0cyI6IHsKICAgICJ0ZXh0Mmh0bWwiOiAibm9kZSBzY3JpcHRzL3RleHQtdG8taHRtbC5tanMiLAogICAgImh0bWwyaW1hZ2VzIjogIm5vZGUgc2NyaXB0cy9odG1sLXRvLWltYWdlcy5tanMiLAogICAgInRleHQyaW1hZ2VzIjogIm5vZGUgc2NyaXB0cy90ZXh0LXRvLWltYWdlcy5tanMiLAogICAgImJhdGNoIjogIm5vZGUgc2NyaXB0cy9iYXRjaC1odG1sLXRvLWltYWdlcy5tanMiCiAgfSwKICAiZGVwZW5kZW5jaWVzIjogewogICAgInBsYXl3cmlnaHQiOiAiXjEuNjAuMCIKICB9Cn0NCg==
